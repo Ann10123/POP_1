@@ -85,7 +85,7 @@ begin
          Put_Line ("Керуючий потік: Початок зупинки потоків по черзі...");
          
          for I in 1 .. Num_Threads loop
-            delay 1; -- чекаємо 
+            delay 1.0; -- чекаємо 
             Flags(I).Set_True; -- зупиняємо конкретний потік
          end loop;
       end Stopper_Task;
