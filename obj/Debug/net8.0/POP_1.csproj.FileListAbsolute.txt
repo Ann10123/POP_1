@@ -1,0 +1,14 @@
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\bin\Debug\net8.0\POP_1.exe
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\bin\Debug\net8.0\POP_1.deps.json
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\bin\Debug\net8.0\POP_1.runtimeconfig.json
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\bin\Debug\net8.0\POP_1.dll
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\bin\Debug\net8.0\POP_1.pdb
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\POP_1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\POP_1.AssemblyInfoInputs.cache
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\POP_1.AssemblyInfo.cs
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\POP_1.csproj.CoreCompileInputs.cache
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\POP_1.dll
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\refint\POP_1.dll
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\POP_1.pdb
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\POP_1.genruntimeconfig.cache
+C:\Users\06028\OneDrive\Робочий стіл\3 курс 2 семестр\POP_1\obj\Debug\net8.0\ref\POP_1.dll
