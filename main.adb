@@ -1,9 +1,10 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
 
 procedure Main is
 
-   -- об'єкт для прапорця зупинки (безпечний для потоків)
+   -- об'єкт для прапорця зупинки 
    protected type Stop_Flag is
       procedure Set_True;
       function Is_True return Boolean;
@@ -30,10 +31,9 @@ begin
    Get (Num_Threads);
    
    Put_Line ("");
-   Put_Line ("Головний потік: Запуск робочих потоків...");
 
    declare
-      -- масив прапорців (по одному для кожного потоку)
+      -- масив прапорців 
       Flags : array (1 .. Num_Threads) of Stop_Flag;
 
       -- типи потоків
@@ -45,11 +45,14 @@ begin
          entry Start;
       end Stopper_Task;
 
+      task type Timer_Task is
+         entry Start_Timer (Target_ID : Integer; Wait_Time : Duration);
+      end Timer_Task;
+
       -- створюємо потоки
       Workers : array (1 .. Num_Threads) of Calculator_Task;
       Stopper : Stopper_Task;
 
-      -- описуємо, що роблять потоки
       task body Calculator_Task is
          Id      : Integer;
          Step    : Long_Long_Integer;
@@ -63,7 +66,6 @@ begin
             Step := Task_Step;
          end Start;
 
-         -- головний цикл обчислень
          loop
             Sum := Sum + Current;
             Current := Current + Step;
@@ -78,15 +80,36 @@ begin
                    Long_Long_Integer'Image(Count));
       end Calculator_Task;
 
-      task body Stopper_Task is
+      task body Timer_Task is
+         My_Target : Integer;
+         My_Delay  : Duration;
       begin
-         -- чекаємо команду на старт
+         -- Отримуємо від Стоппера номер потоку і скільки спати
+         accept Start_Timer (Target_ID : Integer; Wait_Time : Duration) do
+            My_Target := Target_ID;
+            My_Delay  := Wait_Time;
+         end Start_Timer;
+         
+         -- Спимо, а потім зупиняємо СВІЙ потік
+         delay My_Delay;
+         Flags(My_Target).Set_True;
+      end Timer_Task;
+
+      task body Stopper_Task is
+         Gen : Generator;
+         Random_Delay : Float;
+         
+         Timers : array (1 .. Num_Threads) of Timer_Task;
+      begin
          accept Start; 
-         Put_Line ("Керуючий потік: Початок зупинки потоків по черзі...");
+         Reset(Gen);
          
          for I in 1 .. Num_Threads loop
-            delay 1; -- чекаємо 
-            Flags(I).Set_True; -- зупиняємо конкретний потік
+            -- Генеруємо час від 0.5 до 5.0 секунд
+            Random_Delay := Random(Gen) * 4.5 + 0.5; 
+            
+            -- Миттєво запускаємо таймер для потоку I
+            Timers(I).Start_Timer(I, Duration(Random_Delay));
          end loop;
       end Stopper_Task;
 
@@ -96,11 +119,7 @@ begin
          Workers(I).Start (I, Long_Long_Integer(I * 2));
       end loop;
       
-      -- коли всі робочі отримали завдання, запускаємо зупиняч
+      -- запускаємо зупиняч
       Stopper.Start;
-      
-      -- головний потік автоматично зупиняється 
    end;
-
-   Put_Line ("Головний потік: Усі потоки зупинено, програма завершує роботу.");
 end Main;

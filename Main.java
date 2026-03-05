@@ -1,3 +1,7 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.math.BigInteger;
 
@@ -14,7 +18,6 @@ public class Main {
     void startApp(int numThreads) {
         CalculatorTask[] tasks = new CalculatorTask[numThreads];
         Thread[] workers = new Thread[numThreads];
-        System.out.println("\nГоловний потік: Запуск робочих потоків...");
 
         for (int i = 0; i < numThreads; i++) {
             int threadId = i + 1;
@@ -29,29 +32,22 @@ public class Main {
 
         Thread stopperThread = new Thread(() -> stopper(tasks));
         stopperThread.start();
-
-        try {
-            stopperThread.join();
-            for (Thread worker : workers) {
-                worker.join(); 
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        System.out.println("Головний потік: Усі потоки зупинено, програма завершує роботу.");
     }
 
     void stopper(CalculatorTask[] tasks) {
-        System.out.println("Керуючий потік: Початок зупинки потоків по черзі...\n");
+        Random rnd = new Random();
         
-        for (CalculatorTask task : tasks) {
-            try {
-                Thread.sleep(500); 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            task.stopTask();       
+        for (int i = 0; i < tasks.length; i++) {
+            int randomSleep = rnd.nextInt(4500) + 500; 
+            final CalculatorTask currentTask = tasks[i]; 
+            new Thread(() -> {
+                try {
+                    Thread.sleep(randomSleep); 
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                currentTask.stopTask(); 
+            }).start();
         }
     }
 }
@@ -66,7 +62,6 @@ class CalculatorTask implements Runnable {
         this.step = step;
     }
 
-    @Override
     public void run() {
         BigInteger sum = BigInteger.ZERO;
         long count = 0;

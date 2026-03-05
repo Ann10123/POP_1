@@ -52,8 +52,6 @@ namespace ThreadDemo
         {
             CalculatorTask[] tasks = new CalculatorTask[numThreads];
 
-            Console.WriteLine("\nГоловний потік: Запуск робочих потоків...");
-
             for (int i = 0; i < numThreads; i++)
             {
                 int threadId = i + 1;
@@ -67,20 +65,20 @@ namespace ThreadDemo
 
             Thread stopperThread = new Thread(() => Stopper(tasks));
             stopperThread.Start();
-
-            stopperThread.Join();
-            
-            Console.WriteLine("Головний потік: Усі потоки зупинено, програма завершує роботу.");
         }
 
-        void Stopper(CalculatorTask[] tasks)
-        {
-            Console.WriteLine("Керуючий потік: Початок зупинки потоків по черзі...\n");
-            
-            foreach (var task in tasks)
+        static void Stopper(CalculatorTask[] tasks)
+        {   
+            Random rnd = new Random();
+            for (int i = 0; i < tasks.Length; i++)
             {
-                Thread.Sleep(1000); 
-                task.Stop();  
+                int randomSleep = rnd.Next(500, 5000);
+                int index = i; 
+                new Thread(() => 
+                {
+                    Thread.Sleep(randomSleep);
+                    tasks[index].Stop();       
+                }).Start();
             }
         }
     }
